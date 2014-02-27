@@ -84,18 +84,18 @@ begin
 				
 --COMPLETE THE NEXT STATE LOGIC ASSIGNMENTS FOR FLOORS 3 AND 4
 				when floor3 =>
-					if (							) then 
-						floor_state <= 
-					elsif (						) then 
-						floor_state <= 	
+					if (up_down='1' and stop='0') then 
+						floor_state <= floor4;
+					elsif (up_down='0' and stop='0') then 
+						floor_state <= floor2;	
 					else
-						floor_state <= 	
+						floor_state <= floor3; 	
 					end if;
 				when floor4 =>
-					if (							) then 
-						floor_state <= 	
+					if (up_down='0' and stop='0') then 
+						floor_state <= floor3; 	
 					else 
-						floor_state <= 	
+						floor_state <= floor4;	
 					end if;
 				
 				--This line accounts for phantom states
@@ -107,10 +107,10 @@ begin
 end process;
 
 -- Here you define your output logic. Finish the statements below
-floor <= "0001" when (floor_state =       ) else
-			"0010" when (                    ) else
-			"0011" when (                    ) else
-			"0100" when (                    ) else
+floor <= "0001" when (floor_state =   floor1 ) else
+			"0010" when (floor_state =   floor2 ) else
+			"0011" when (floor_state =   floor3 ) else
+			"0100" when (floor_state =   floor4 ) else
 			"0001";
 
 end Behavioral;
