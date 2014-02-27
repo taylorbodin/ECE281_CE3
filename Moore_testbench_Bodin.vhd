@@ -87,13 +87,14 @@ BEGIN
    stim_proc: process
    begin		
       -- hold reset state for 100 ns.
-      wait for 100 ns;	
+      wait for 100 ns;
+		reset <= '1';
 
       wait for clk_period*10;
 
       -- insert stimulus here 
 		
-		reset <= '1';
+		reset <= '0';
 		
 		-- Floor 1 to Floor 2;
 		up_down <= '1';
