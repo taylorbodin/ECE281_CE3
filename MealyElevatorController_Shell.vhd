@@ -35,7 +35,7 @@ entity MealyElevatorController_Shell is
            stop : in  STD_LOGIC;
            up_down : in  STD_LOGIC;
            floor : out  STD_LOGIC_VECTOR (3 downto 0);
-			  nextfloor : out std_logic_vector (3 downto 0));
+			  nextfloor : inout std_logic_vector (3 downto 0));
 end MealyElevatorController_Shell;
 
 architecture Behavioral of MealyElevatorController_Shell is
@@ -52,16 +52,75 @@ begin
 ---------------------------------------------------------
 floor_state_machine: process(clk)
 begin
---Insert your state machine below:
-
+--clk'event and clk='1' is VHDL-speak for a rising edge
+	if clk'event and clk='1' then
+		--reset is active high and will return the elevator to floor1
+		--Question: is reset synchronous or asynchronous?
+		if reset='1' then
+			floor_state <= floor1;
+		--now we will code our next-state logic
+		else
+			case floor_state is
+				--when our current state is floor1
+				when floor1 =>
+					--if up_down is set to "go up" and stop is set to 
+					--"don't stop" which floor do we want to go to?
+					if (up_down='1') then 
+						--floor2 right?? This makes sense!
+						floor_state <= floor2;
+					--otherwise we're going to stay at floor1
+					else
+						floor_state <= floor1;
+					end if;
+				--when our current state is floor2
+				when floor2 => 
+					--if up_down is set to "go up" and stop is set to 
+					--"don't stop" which floor do we want to go to?
+					if (up_down='1') then 
+						floor_state <= floor3; 			
+					--if up_down is set to "go down" and stop is set to 
+					--"don't stop" which floor do we want to go to?
+					elsif (up_down='0') then 
+						floor_state <= floor1;
+					--otherwise we're going to stay at floor2
+					else
+						floor_state <= floor2;
+					end if;
+				
+--COMPLETE THE NEXT STATE LOGIC ASSIGNMENTS FOR FLOORS 3 AND 4
+				when floor3 =>
+					if (up_down='1') then 
+						floor_state <= floor4;
+					elsif (up_down='0') then 
+						floor_state <= floor2;	
+					else
+						floor_state <= floor3; 	
+					end if;
+				when floor4 =>
+					if (up_down='0') then 
+						floor_state <= floor3; 	
+					else 
+						floor_state <= floor4;	
+					end if;
+				
+				--This line accounts for phantom states
+				when others =>
+					floor_state <= floor1;
+			end case;
+		end if;
+	end if;
 end process;
 
 -----------------------------------------------------------
 --Code your Ouput Logic for your Mealy machine below
 --Remember, now you have 2 outputs (floor and nextfloor)
 -----------------------------------------------------------
-floor <= 
-nextfloor <= 	
+floor <= nextfloor when (stop = '0');
+nextfloor <= "0001" when (floor_state =   floor1 ) else
+			"0010" when (floor_state =   floor2 ) else
+			"0011" when (floor_state =   floor3 ) else
+			"0100" when (floor_state =   floor4 ) else
+			"0001";	
 
 end Behavioral;
 
