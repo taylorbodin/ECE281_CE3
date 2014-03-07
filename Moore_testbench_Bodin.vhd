@@ -95,29 +95,45 @@ BEGIN
       -- insert stimulus here 
 		
 		reset <= '0';
+		assert(floor = "0001")
+			report "Expected floor 0001"
+			severity error;
 		
 		-- Floor 1 to Floor 2;
 		up_down <= '1';
 		stop <= '0';
 		wait for clk_period*1;
 		stop <= '1';
+		assert(floor = "0010")
+			report "Expected floor 0010"
+			severity error;
 		wait for clk_period*2;
 		
 		-- Floor 2 to Floor 3
 		stop <= '0';
 		wait for clk_period*1;
 		stop <= '1';
+		assert (floor = "0011")
+			report "Expected floor 0011"
+			severity error;
 		wait for clk_period*2;
 
 		-- Floor 3 to Floor 4
 		stop <= '0';
 		wait for clk_period*1;
 		stop <= '1';
+		assert(floor = "0100")
+			report "Expected floor 0100"
+			severity error;
 		wait for clk_period*2;
 		
 		-- Floor 4 down to 1
 		up_down <= '0';
 		stop <= '0';
+		wait for clk_period*4;
+		assert(floor = "0001")
+			report "Expected floor 0001"
+			severity error;
 		
       wait;
    end process;
