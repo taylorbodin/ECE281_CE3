@@ -50,64 +50,63 @@ begin
 --Code your Mealy machine next-state process below
 --Question: Will it be different from your Moore Machine?
 ---------------------------------------------------------
-floor_state_machine: process(clk)
+floor_state_machine: process(clk, reset, stop)
 begin
+
+	if reset='1' then
+		floor_state <= floor1;
+	end if;
+
 --clk'event and clk='1' is VHDL-speak for a rising edge
-	if clk'event and clk='1' then
-		--reset is active high and will return the elevator to floor1
-		--Question: is reset synchronous or asynchronous?
-		if reset='1' then
-			floor_state <= floor1;
-		--now we will code our next-state logic
-		else
-			case floor_state is
+	if clk'event and clk='1' and stop = '0' then
+	
+		case floor_state is
 				--when our current state is floor1
-				when floor1 =>
+			when floor1 =>
 					--if up_down is set to "go up" and stop is set to 
 					--"don't stop" which floor do we want to go to?
-					if (up_down='1') then 
+				if (up_down='1') then 
 						--floor2 right?? This makes sense!
-						floor_state <= floor2;
+					floor_state <= floor2;
 					--otherwise we're going to stay at floor1
-					else
+				else
 						floor_state <= floor1;
-					end if;
+				end if;
 				--when our current state is floor2
-				when floor2 => 
+			when floor2 => 
 					--if up_down is set to "go up" and stop is set to 
 					--"don't stop" which floor do we want to go to?
-					if (up_down='1') then 
+				if (up_down='1') then 
 						floor_state <= floor3; 			
 					--if up_down is set to "go down" and stop is set to 
 					--"don't stop" which floor do we want to go to?
-					elsif (up_down='0') then 
+				elsif (up_down='0') then 
 						floor_state <= floor1;
 					--otherwise we're going to stay at floor2
-					else
-						floor_state <= floor2;
-					end if;
+				else
+					floor_state <= floor2;
+				end if;
 				
 --COMPLETE THE NEXT STATE LOGIC ASSIGNMENTS FOR FLOORS 3 AND 4
-				when floor3 =>
-					if (up_down='1') then 
-						floor_state <= floor4;
-					elsif (up_down='0') then 
-						floor_state <= floor2;	
-					else
-						floor_state <= floor3; 	
-					end if;
-				when floor4 =>
-					if (up_down='0') then 
-						floor_state <= floor3; 	
-					else 
-						floor_state <= floor4;	
-					end if;
+			when floor3 =>
+				if (up_down='1') then 
+					floor_state <= floor4;
+				elsif (up_down='0') then 
+					floor_state <= floor2;	
+				else
+					floor_state <= floor3; 	
+				end if;
+			when floor4 =>
+				if (up_down='0') then 
+					floor_state <= floor3; 	
+				else 
+					floor_state <= floor4;	
+				end if;
 				
 				--This line accounts for phantom states
-				when others =>
-					floor_state <= floor1;
-			end case;
-		end if;
+			when others =>
+				floor_state <= floor1;
+		end case;
 	end if;
 end process;
 

@@ -105,19 +105,19 @@ BEGIN
 		-- Floor 1 to Floor 2;
 		up_down <= '1';
 		stop <= '0';
-		wait for clk_period*2;
+		wait for clk_period*1;
 		stop <= '1';
 		wait for clk_period*2;
 		
 		-- Floor 2 to Floor 3
 		stop <= '0';
-		wait for clk_period*2;
+		wait for clk_period*1;
 		stop <= '1';
 		wait for clk_period*2;
 
 		-- Floor 3 to Floor 4
 		stop <= '0';
-		wait for clk_period*2;
+		wait for clk_period*1;
 		stop <= '1';
 		wait for clk_period*2;
 		
