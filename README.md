@@ -39,4 +39,4 @@ and stopping for two clock cycles each floor. On the way down it progess from th
 Per the handout, this is a correct response for the test bench.
 
 ## Documentation
-I worked with C3C park to troublshoot my test bench. I help him a lot with his mealy machine and gave conceptual guidance. 
+I worked with C3C park to troublshoot my test bench. I helped him a lot with his mealy machine and gave conceptual guidance. 
